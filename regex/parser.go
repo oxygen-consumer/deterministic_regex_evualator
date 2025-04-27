@@ -2,7 +2,16 @@ package regex
 
 import "fmt"
 
-func ToPostfix(infix []Token) ([]Token, error) {
+func Parse(infix []Token) ([]Token, error) {
+	postfix, err := toPostfix(insertConcat(infix))
+	if err != nil {
+		return nil, err
+	}
+
+	return postfix, nil
+}
+
+func toPostfix(infix []Token) ([]Token, error) {
 	var output []Token
 	var stack []Token
 
@@ -61,6 +70,27 @@ func ToPostfix(infix []Token) ([]Token, error) {
 	}
 
 	return output, nil
+}
+
+func insertConcat(tokens []Token) []Token {
+	var result []Token
+
+	for i := range tokens {
+		result = append(result, tokens[i])
+
+		if i+1 < len(tokens) {
+			current := tokens[i]
+			next := tokens[i+1]
+
+			if (current.Type == CHAR || current.Type == RPAREN || current.Type == KLEENE ||
+				current.Type == PLUS || current.Type == QUESTION) &&
+				(next.Type == CHAR || next.Type == LPAREN) {
+				result = append(result, Token{Type: CONCAT, Value: '.'})
+			}
+		}
+	}
+
+	return result
 }
 
 func precedence(tok Token) int {

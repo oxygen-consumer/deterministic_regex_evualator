@@ -24,5 +24,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	config.RunTests(tests)
+	err = config.RunTests(tests)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+		os.Exit(1)
+	}
 }

@@ -1,8 +1,10 @@
 package config
 
 import (
+	"deterministic_regex_evaluator/nfa"
 	"deterministic_regex_evaluator/regex"
 	"fmt"
+	"os"
 )
 
 func RunTests(tests []RegexTest) error {
@@ -14,7 +16,7 @@ func RunTests(tests []RegexTest) error {
 
 		tokens := regex.Tokenize(test.Regex)
 
-		postfix, err := regex.ToPostfix(tokens)
+		postfix, err := regex.Parse(tokens)
 		if err != nil {
 			return err
 		}
@@ -25,6 +27,14 @@ func RunTests(tests []RegexTest) error {
 		}
 
 		fmt.Printf("test %s: %s -> %s\n", test.Name, test.Regex, string(postfixRunes))
+
+		builtNFA, err := nfa.BuildNFA(postfix)
+		if err != nil {
+			return err
+		}
+
+		dotString := builtNFA.ToDot()
+		os.WriteFile("./out/"+test.Name+"_nfa.dot", []byte(dotString), 0644)
 	}
 
 	return nil
