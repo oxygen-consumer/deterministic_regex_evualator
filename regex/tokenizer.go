@@ -1,25 +1,7 @@
 package regex
 
-type TokenType int
-
-const (
-	CHAR     TokenType = iota
-	KLEENE             // *
-	PLUS               // +
-	QUESTION           // ?
-	OR                 // |
-	CONCAT             // .
-	LPAREN             // (
-	RPAREN             // )
-)
-
-type Token struct {
-	Type  TokenType
-	Value rune
-}
-
 func Tokenize(regexString string) []Token {
-	var tokens []Token
+	tokens := make([]Token, 0, len(regexString))
 
 	for _, tok := range regexString {
 		switch tok {

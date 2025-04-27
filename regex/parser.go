@@ -12,8 +12,8 @@ func Parse(infix []Token) ([]Token, error) {
 }
 
 func toPostfix(infix []Token) ([]Token, error) {
-	var output []Token
-	var stack []Token
+	output := make([]Token, 0, len(infix))
+	stack := make([]Token, 0, len(infix))
 
 	for _, tok := range infix {
 		switch tok.Type {
@@ -44,7 +44,7 @@ func toPostfix(infix []Token) ([]Token, error) {
 			for len(stack) > 0 {
 				top := stack[len(stack)-1]
 
-				if (top.Type != LPAREN) && (precedence(top) >= precedence(tok)) {
+				if (top.Type != LPAREN) && (top.precedence() >= tok.precedence()) {
 					output = append(output, top)
 					stack = stack[:len(stack)-1]
 				} else {
@@ -73,7 +73,7 @@ func toPostfix(infix []Token) ([]Token, error) {
 }
 
 func insertConcat(tokens []Token) []Token {
-	var result []Token
+	result := make([]Token, 0, len(tokens)*2)
 
 	for i := range tokens {
 		result = append(result, tokens[i])
@@ -91,17 +91,4 @@ func insertConcat(tokens []Token) []Token {
 	}
 
 	return result
-}
-
-func precedence(tok Token) int {
-	switch tok.Type {
-	case KLEENE, PLUS, QUESTION:
-		return 3
-	case CONCAT:
-		return 2
-	case OR:
-		return 1
-	default:
-		return 0
-	}
 }
