@@ -1,6 +1,7 @@
 package config
 
 import (
+	"deterministic_regex_evaluator/dfa"
 	"deterministic_regex_evaluator/nfa"
 	"deterministic_regex_evaluator/regex"
 	"fmt"
@@ -9,11 +10,6 @@ import (
 
 func RunTests(tests []RegexTest) error {
 	for _, test := range tests {
-		// TODO:
-		// load regex to dfa
-		// run dfa for each string and check the expected
-		// if the expected is different than the dfa result, return an error
-
 		tokens := regex.Tokenize(test.Regex)
 
 		postfix, err := regex.Parse(tokens)
@@ -33,8 +29,17 @@ func RunTests(tests []RegexTest) error {
 			return err
 		}
 
-		dotString := builtNFA.ToDot()
-		os.WriteFile("./out/"+test.Name+"_nfa.dot", []byte(dotString), 0644)
+		builtDFA := dfa.BuildDFAFromNFA(builtNFA)
+		for _, testString := range test.TestStrings {
+			if testString.Expected != dfa.RunDFA(builtDFA, testString.Input) {
+				fmt.Printf("test failed for test %s on input %s\n", test.Name, testString.Input)
+			}
+		}
+
+		dotStringNFA := builtNFA.ToDot()
+		os.WriteFile("./out/"+test.Name+"_nfa.dot", []byte(dotStringNFA), 0644)
+		dotStringDFA := builtDFA.ToDot()
+		os.WriteFile("./out/"+test.Name+"_dfa.dot", []byte(dotStringDFA), 0644)
 	}
 
 	return nil

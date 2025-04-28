@@ -85,7 +85,7 @@
     "test_strings": [
       { "input": "aa", "expected": true },
       { "input": "ba", "expected": false },
-      { "input": "aba", "expected": true },
+      { "input": "aba", "expected": false },
       { "input": "ab", "expected": true }
     ]
   },
@@ -96,7 +96,7 @@
       { "input": "", "expected": true },
       { "input": "a", "expected": true },
       { "input": "b", "expected": true },
-      { "input": "aabbbabba", "expected": false }
+      { "input": "aabbbabba", "expected": true }
     ]
   },  
   {
@@ -127,7 +127,7 @@
       { "input": "", "expected": true },
       { "input": "ad", "expected": true },
       { "input": "abcd", "expected": true },
-      { "input": "abcbcd", "expected": false },
+      { "input": "abcbcd", "expected": true },
       { "input": "abcbcad", "expected": false }
     ]
   },
@@ -137,8 +137,8 @@
     "test_strings": [
       { "input": "af", "expected": true },
       { "input": "abf", "expected": true },
-      { "input": "acddef", "expected": true },
-      { "input": "acf", "expected": true },
+      { "input": "acddef", "expected": false },
+      { "input": "acf", "expected": false },
       { "input": "adf", "expected": false }
     ]
   },
@@ -158,8 +158,8 @@
     "test_strings": [
       { "input": "", "expected": true },
       { "input": "abcabc", "expected": true },
-      { "input": "abcc", "expected": false },
-      { "input": "aabbcc", "expected": false }
+      { "input": "abcc", "expected": true },
+      { "input": "aabbcc", "expected": true }
     ]
   },
   {
@@ -168,7 +168,7 @@
     "test_strings": [
       { "input": "", "expected": true },
       { "input": "abe", "expected": true },
-      { "input": "ababe", "expected": false },
+      { "input": "ababe", "expected": true },
       { "input": "abecdabe", "expected": true }
     ]
   },
@@ -178,7 +178,7 @@
     "test_strings": [
       { "input": "ad", "expected": true },
       { "input": "abcd", "expected": true },
-      { "input": "adbcd", "expected": true },
+      { "input": "adbcd", "expected": false },
       { "input": "abcbcd", "expected": false }
     ]
   },
@@ -199,8 +199,8 @@
     "test_strings": [
       { "input": "ad", "expected": true },
       { "input": "abcd", "expected": true },
-      { "input": "abcbcd", "expected": false },
-      { "input": "adf", "expected": true },
+      { "input": "abcbcd", "expected": true },
+      { "input": "adf", "expected": false },
       { "input": "adfgh", "expected": false },
       { "input": "adfg", "expected": true }
     ]
